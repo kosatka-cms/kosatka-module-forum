@@ -1,0 +1,40 @@
+{{template "layout.html" .}}
+
+{{define "page_meta"}}
+<span class="admin-page-meta">{{t "The vocabulary the forum is built from: root terms are categories (their pages list the forums), child terms are forums with topics. Without a vocabulary the forum is empty. Terms are edited in <a href=\":url\">taxonomy</a>." ":url" "/admin/config/taxonomy"}}</span>
+{{end}}
+
+{{define "page_actions"}}
+<button type="submit" form="forum-settings-form" class="btn btn-primary">{{t "Save"}}</button>
+{{end}}
+
+{{define "page_body"}}{{template "content" .}}{{end}}
+
+{{define "content"}}
+{{template "admin_alerts" (dict "Ctx" .
+    "Done" (dict
+        "saved" (t "Saved."))
+    "Errors" (dict
+        "invalid" (t "No such vocabulary.")
+        "1" (t "Error while saving.")))}}
+
+{{$current := .settings.VocabularyID}}
+<form method="post" action="/admin/config/forum" id="forum-settings-form" class="admin-settings">
+    <div class="admin-settings-card">
+        <div class="admin-setting">
+            <div class="admin-setting-text">
+                <label for="vocabulary_id" class="admin-setting-label">{{t "Forum vocabulary"}}</label>
+            </div>
+            <div class="admin-setting-control">
+                <select id="vocabulary_id" name="vocabulary_id" class="form-select">
+                    <option value="">{{t "- not selected (forum disabled) -"}}</option>
+                    {{range .vocabularies}}<option value="{{.ID}}"{{if eq .ID $current}} selected{{end}}>{{.Name}}</option>{{end}}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="admin-settings-actions">
+        <button type="submit" class="btn btn-primary">{{t "Save"}}</button>
+    </div>
+</form>
+{{end}}

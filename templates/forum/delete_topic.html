@@ -1,0 +1,22 @@
+{{template "layout.html" .}}
+
+{{define "title"}}<h1 class="page-title">{{t "Delete topic"}}</h1>{{end}}
+
+{{define "breadcrumb"}}{{template "breadcrumbs_nav" .}}{{end}}
+
+{{define "content"}}{{attach "forum"}}
+
+<div class="forum-delete-topic">
+    <p>{{t "Are you sure you want to delete the topic \"@title\"?" "@title" .topic.Title}}</p>
+    <p class="text-muted">{{t "The topic and all its comments will be deleted permanently."}}</p>
+
+    <form method="POST" action="/forum/topic/{{.topic.ID}}/delete" class="node-form">
+        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">{{t "Delete"}}</button>
+            <a href="{{.topicPath}}" class="btn btn-secondary">{{t "Cancel"}}</a>
+        </div>
+    </form>
+</div>
+
+{{end}}

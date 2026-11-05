@@ -1,0 +1,134 @@
+{{define "forum_comments"}}{{attach "forum"}}
+{{if .comments}}
+{{$ctx := .}}
+{{range $index, $comment := .comments}}
+{{template "forum_comment" dict "comment" $comment "topic" $ctx.topic "user" $ctx.user "canAdminister" $ctx.canAdministerComments}}
+{{end}}
+{{end}}
+{{end}}
+
+{{define "forum_comment"}}
+{{$comment := .comment}}
+{{$topic := .topic}}
+{{$user := .user}}
+{{$canAdminister := .canAdminister}}
+<a id="comment-{{$comment.ID}}"></a>
+
+<div id="post-{{$comment.ID}}" class="forum-post clearfix ru posted-by-{{if $comment.Author}}{{$comment.Author.ID}}{{else}}0{{end}}{{if and $topic $topic.Author $comment.Author}}{{if eq $topic.Author.ID $comment.Author.ID}} post-by-starter{{end}}{{end}}{{if gt $comment.Depth 0}} comment-depth-{{$comment.Depth}}{{end}}" style="{{if gt $comment.Depth 0}}--forum-depth: {{$comment.Depth}}; margin-left: {{mul $comment.Depth 30}}px;{{end}}">
+    <div class="forum-post-info clearfix">
+        <div class="forum-posted-on">
+            {{date $comment.CreatedAt "datetime"}}
+        </div>
+        {{if $comment.Author}}
+
+        <span class="forum-post-author-mobile">
+            {{if $comment.Author.Slug}}
+            <a href="/{{$comment.Author.Slug}}" title="{{t "User information"}}">{{$comment.Author.Username}}</a>
+            {{else}}
+            <span>{{$comment.Author.Username}}</span>
+            {{end}}
+        </span>
+        {{else}}
+        <span class="forum-post-author-mobile">{{t "Guest"}}</span>
+        {{end}}
+        {{with $comment.ParentID}}
+        <span class="forum-in-reply-to">
+            <a href="{{$topic.Path}}#comment-{{.}}" class="active">{{t "(Reply to #@id)" "@id" .}}</a>
+        </span>
+        {{end}}
+        <span class="forum-post-number">
+            <a href="{{$topic.Path}}#comment-{{$comment.ID}}" class="permalink" rel="bookmark">#{{$comment.ID}}</a>
+        </span>
+    </div>
+
+    <div class="forum-post-wrapper">
+        <div class="forum-post-panel-sub">
+            <div class="avatar-user js-avatar-user">
+                {{if $comment.Author}}
+                <center>
+                    {{if $comment.Author.Slug}}
+                    <a class="username" title="{{t "User information"}}" href="/{{$comment.Author.Slug}}">{{$comment.Author.Username}}</a>
+                    {{else}}
+                    <span class="username">{{$comment.Author.Username}}</span>
+                    {{end}}
+                </center>
+                <div class="user-picture">
+                    <center>
+                        {{if $comment.Author.Slug}}
+                        <a title="{{t "User information"}}" href="/{{$comment.Author.Slug}}">
+                        {{end}}
+                        {{if and $comment.Author.Avatar $comment.Author.Avatar.URI}}
+                        <img src="{{$comment.Author.Avatar.URI}}" alt="{{t "Avatar of @name" "@name" $comment.Author.Username}}">
+                        {{else}}
+                        <img src="{{avatarPlaceholder}}" alt="{{t "Avatar of @name" "@name" $comment.Author.Username}}">
+                        {{end}}
+                        {{if $comment.Author.Slug}}
+                        </a>
+                        {{end}}
+                    </center>
+                </div>
+                {{else}}
+                <center><span class="username">{{t "Guest"}}</span></center>
+                <div class="user-picture">
+                    <center>
+                        <img src="{{avatarPlaceholder}}" alt="{{t "Guest avatar"}}">
+                    </center>
+                </div>
+                {{end}}
+            </div>
+        </div>
+
+        <div class="forum-post-panel-main clearfix">
+            <div class="forum-post-content">
+                <div class="comment-body">
+                    {{$comment.Content | rawHTML}}
+                </div>
+            </div>
+
+            {{if and $comment.Author $comment.Author.Signature}}
+            <div class="author-signature">
+                {{$comment.Author.Signature | rawHTML}}
+            </div>
+            {{end}}
+        </div>
+    </div>
+
+    <div class="forum-post-footer clearfix">
+        <div class="forum-post-links">
+            <ul class="links inline">
+                {{if $user}}
+                <li class="comment_forbidden first">
+                    <span><a href="{{$topic.Path}}#comment-form" data-reply-to="{{$comment.ID}}" data-author="{{if $comment.Author}}{{$comment.Author.Username}}{{else}}{{t "Guest"}}{{end}}" class="comment-reply-link">{{t "Reply"}}</a></span>
+                </li>
+                
+                {{if or (eq $user.ID $comment.CreatedBy) $canAdminister}}
+                <li class="comment-edit">
+                    <a href="/comment/{{$comment.ID}}/edit">{{tc "comment" "Edit"}}</a>
+                </li>
+                {{end}}
+                
+                {{if $canAdminister}}
+                <li class="comment-delete last">
+                    <a href="/comment/{{$comment.ID}}/delete" class="delete-link">{{t "Delete"}}</a>
+                </li>
+                {{end}}
+                {{else}}
+                <li class="comment_forbidden first last">
+                    <span>
+                        {{if registrationOpen}}{{t "<a href=\":login\">Log in</a> or <a href=\":register\">register</a> to post comments" ":login" (printf "/login?destination=%s" (urlquery (printf "%s#comment-form" $topic.Path))) ":register" (printf "/user/register?destination=%s" (urlquery (printf "%s#comment-form" $topic.Path)))}}{{else}}{{t "<a href=\":login\">Log in</a> to post comments" ":login" (printf "/login?destination=%s" (urlquery (printf "%s#comment-form" $topic.Path)))}}{{end}}
+                    </span>
+                </li>
+                {{end}}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{{if $comment.Children}}
+<div class="indented">
+    {{range $child := $comment.Children}}
+    {{template "forum_comment" dict "comment" $child "topic" $topic "user" $user "index" $child.ID "canAdminister" $canAdminister}}
+    {{end}}
+</div>
+{{end}}
+{{end}}

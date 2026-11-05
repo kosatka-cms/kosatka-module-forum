@@ -1,0 +1,6 @@
+-- Create "forum_settings" table
+CREATE TABLE `forum_settings` (`id` int unsigned NOT NULL, `vocabulary_id` int unsigned NULL, PRIMARY KEY (`id`), INDEX `forumsettings_vocabulary_id` (`vocabulary_id`), CONSTRAINT `forum_settings_taxonomy_vocabulary_vocabulary` FOREIGN KEY (`vocabulary_id`) REFERENCES `taxonomy_vocabulary` (`id`) ON DELETE SET NULL) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- Create "forum_stats" table
+CREATE TABLE `forum_stats` (`id` bigint NOT NULL AUTO_INCREMENT, `sticky` int NOT NULL DEFAULT 0, `comment_count` int NOT NULL DEFAULT 0, `last_comment_at` datetime NOT NULL, `nid` int unsigned NOT NULL, PRIMARY KEY (`id`), UNIQUE INDEX `nid` (`nid`), INDEX `forumstats_sticky` (`sticky`), INDEX `forumstats_last_comment_at` (`last_comment_at`), CONSTRAINT `forum_stats_nodes_forum_stats` FOREIGN KEY (`nid`) REFERENCES `nodes` (`id`) ON DELETE CASCADE) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- Create "forum_topics" table
+CREATE TABLE `forum_topics` (`id` int NOT NULL AUTO_INCREMENT, `body` mediumtext NULL, `nid` int unsigned NOT NULL, PRIMARY KEY (`id`), UNIQUE INDEX `forum_topics_nid` (`nid`), CONSTRAINT `forum_topics_nodes_nodes` FOREIGN KEY (`nid`) REFERENCES `nodes` (`id`) ON DELETE CASCADE) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci;

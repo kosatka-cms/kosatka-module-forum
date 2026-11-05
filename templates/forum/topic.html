@@ -1,0 +1,193 @@
+{{template "layout.html" .}}
+
+{{define "title"}}<h1 class="page-title">{{.topic.Title}}</h1>{{end}}
+
+{{define "breadcrumb"}}{{template "breadcrumbs_nav" .}}{{end}}
+
+{{define "content"}}{{attach "forum"}}
+
+<div class="forum-topic-page">
+    <div id="forum-topic-header" class="forum-topic-header clearfix">
+        <div class="topic-post-count">
+            {{plural .topic.CommentCount "@count post" "@count posts"}}
+        </div>
+
+        {{if or .canEditTopic .canDeleteTopic .canStickTopic}}
+        <div class="topic-actions" style="margin-right: 15px;">
+            {{if .canStickTopic}}
+            <form method="post" action="/forum/topic/{{.topic.ID}}/sticky" class="d-inline">
+                <input type="hidden" name="sticky" value="{{if .topic.Sticky}}0{{else}}1{{end}}">
+                <button type="submit" class="btn btn-sm btn-outline-secondary">{{if .topic.Sticky}}{{t "Unpin"}}{{else}}{{t "Pin to top"}}{{end}}</button>
+            </form>
+            {{end}}
+            {{if .canEditTopic}}
+            <a href="/forum/topic/{{.topic.ID}}/edit" class="btn btn-sm btn-outline-primary">{{t "Edit"}}</a>
+            {{end}}
+            {{if .canDeleteTopic}}
+            <a href="/forum/topic/{{.topic.ID}}/delete" class="btn btn-sm btn-outline-danger">{{t "Delete"}}</a>
+            {{end}}
+        </div>
+        {{end}}
+
+        <div class="topic-reply-link">
+            {{if .user}}
+            <a href="{{.topic.Path}}#comment-form" data-comment-open>{{t "Reply"}}</a>
+            {{else}}
+            {{if registrationOpen}}{{t "<a href=\":login\">Log in</a> or <a href=\":register\">register</a> to post comments" ":login" (printf "/login?destination=%s" (urlquery (printf "%s#comment-form" .topic.Path))) ":register" (printf "/user/register?destination=%s" (urlquery (printf "%s#comment-form" .topic.Path)))}}{{else}}{{t "<a href=\":login\">Log in</a> to post comments" ":login" (printf "/login?destination=%s" (urlquery (printf "%s#comment-form" .topic.Path)))}}{{end}}
+            {{end}}
+        </div>
+
+        <div class="last-post-link">
+            <a href="{{.topic.Path}}?page=last#last-comment" class="af-button-large active">
+                <span>{{t "Last post"}}</span>
+            </a>
+        </div>
+
+        <a id="forum-topic-top"></a>
+    </div>
+
+    {{if eq .pagination.CurrentPage 1}}
+    {{/* First post (first page only). */}}
+    <div id="post-{{.topic.ID}}" class="forum-post clearfix node-full" role="article">
+        <div class="forum-post-info clearfix">
+            <div class="forum-posted-on">
+                {{date .topic.CreatedAt "datetime"}}
+            </div>
+            <span class="forum-post-author-mobile">
+                <a href="/{{.topic.Author.Slug}}" title="{{t "User information"}}">{{.topic.Author.Username}}</a>
+            </span>
+            <span class="forum-post-number">
+                <a href="{{.topic.Path}}" class="active">#1</a>
+            </span>
+        </div>
+
+        <div class="forum-post-wrapper">
+            <div class="forum-post-panel-sub">
+                <div class="avatar-user">
+                    <center>
+                        <a class="username" title="{{t "User information"}}" href="/{{.topic.Author.Slug}}">
+                            {{.topic.Author.Username}}
+                        </a>
+                    </center>
+                    <div class="user-picture">
+                        <center>
+                            {{if .topic.Author.Avatar.URI}}
+                            <a title="{{t "User information"}}" href="/{{.topic.Author.Slug}}">
+                                <img src="{{.topic.Author.Avatar.URI}}" alt="{{t "Avatar of @name" "@name" .topic.Author.Username}}">
+                            </a>
+                            {{else}}
+                            <a title="{{t "User information"}}" href="/{{.topic.Author.Slug}}">
+                                <img src="{{avatarPlaceholder}}" alt="">
+                            </a>
+                            {{end}}
+                        </center>
+                    </div>
+                    
+                    <div class="avatar-user-actions">
+                        <dl class="avatar-user-info">
+                            <dt>
+                                <a class="username" title="{{t "User information"}}" href="/{{.topic.Author.Slug}}">
+                                    {{.topic.Author.Username}}
+                                </a>
+                                {{if .topic.Author.CreatedAt}}
+                                <span class="date-registered">({{date .topic.Author.CreatedAt ""}})</span>
+                                {{end}}
+                            </dt>
+                            {{if and .user (ne .user.ID .topic.Author.ID)}}{{with moduleHook "user_actions" .topic.Author}}<dd>{{.}}</dd>{{end}}{{end}}
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <div class="forum-post-panel-main clearfix">
+                <div class="forum-post-title">
+                    <h2>{{.topic.Title}}</h2>
+                </div>
+
+                <div class="forum-post-content">
+                    {{.topic.Content | rawHTML}}
+                </div>
+
+                {{if .topic.Author.Signature}}
+                <div class="author-signature">
+                    {{.topic.Author.Signature | rawHTML}}
+                </div>
+                {{end}}
+            </div>
+        </div>
+
+        <div class="forum-post-footer clearfix">
+            <div class="forum-post-links">
+                <ul class="links inline">
+                    <li class="statistics_counter first">
+                        <span>{{plural .topic.ViewsCount "@count view" "@count views"}}</span>
+                    </li>
+                    <li class="comment_forbidden last">
+                        {{if .user}}
+                        <span><a href="{{.topic.Path}}#comment-form" data-comment-open>{{t "Reply"}}</a></span>
+                        {{else}}
+                        <span>
+                            {{if registrationOpen}}{{t "<a href=\":login\">Log in</a> or <a href=\":register\">register</a> to post comments" ":login" (printf "/login?destination=%s" (urlquery (printf "%s#comment-form" .topic.Path))) ":register" (printf "/user/register?destination=%s" (urlquery (printf "%s#comment-form" .topic.Path)))}}{{else}}{{t "<a href=\":login\">Log in</a> to post comments" ":login" (printf "/login?destination=%s" (urlquery (printf "%s#comment-form" .topic.Path)))}}{{end}}
+                        </span>
+                        {{end}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {{end}}
+
+    {{/* In-content block region (as on node pages), e.g. an ad between
+         the topic and comments; configured via block placements. */}}
+    {{template "region_blocks" (dict "Region" (region "content_inline") "Ctx" .)}}
+
+    <div id="forum-comments" class="comment-wrapper">
+        {{template "forum_comments" .}}
+    </div>
+
+    {{template "pagination.html" .}}
+
+    {{if .user}}
+    {{/* The comment form: app.js shows it (data-comment-open,
+         data-reply-to) and loads its editor - COMMENT FORM there. */}}
+    <div id="comment-form" class="forum-comment-form" style="display: none;" data-comment-form>
+        <h3>{{t "Leave a comment"}}</h3>
+        
+        <form action="/comment/create" method="POST">
+            <input type="hidden" name="nid" value="{{.topic.ID}}">
+            <input type="hidden" name="parent_id" id="parent_id" value="0">
+            <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+            {{botTrap}}
+            
+            <div class="reply-info-container" id="reply-info" style="display: none;" data-reply-info>
+                <span class="reply-to-text">{{t "Reply to user"}} <strong data-reply-author></strong></span>
+                <button type="button" class="cancel-reply-btn" data-cancel-reply aria-label="{{t "Cancel reply"}}">&times;</button>
+            </div>
+
+            <div class="form-item">
+                <label for="content">{{t "Comment"}} <span class="required">*</span></label>
+                <textarea id="content" name="content" class="form-control forum-comment-editor" data-editor-config="{{json (dict "preset" "comment")}}"></textarea>
+            </div>
+
+            {{template "recaptcha" (dict "key" (commentCaptcha .user) "class" "mb-3")}}
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">{{t "Submit"}}</button>
+                <button type="button" class="btn btn-secondary" data-cancel-reply>{{t "Cancel"}}</button>
+            </div>
+        </form>
+    </div>
+    {{template "tinymce_user_files.html" .}}
+    {{else}}
+    <div class="forum-comment-form">
+        <p>
+            {{if registrationOpen}}{{t "<a href=\":login\">Log in</a> or <a href=\":register\">register</a> to post comments" ":login" (printf "/login?destination=%s" (urlquery (printf "%s#comment-form" .topic.Path))) ":register" (printf "/user/register?destination=%s" (urlquery (printf "%s#comment-form" .topic.Path)))}}{{else}}{{t "<a href=\":login\">Log in</a> to post comments" ":login" (printf "/login?destination=%s" (urlquery (printf "%s#comment-form" .topic.Path)))}}{{end}}
+        </p>
+    </div>
+    {{end}}
+
+    <a id="last-comment"></a>
+</div>
+
+
+{{end}}

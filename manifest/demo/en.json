@@ -1,0 +1,39 @@
+{
+  "vocabulary": "Forum",
+  "menu": "Forum",
+  "categories": [
+    {"name": "Kosatka CMS", "description": "All about the engine: questions, ideas, finds.", "sections": [
+      {"name": "Questions and answers", "description": "Stuck? Ask - someone will help."},
+      {"name": "Ideas and suggestions", "description": "What the engine and its themes are missing."}
+    ]},
+    {"name": "The wardroom", "description": "Talk that isn't about work.", "sections": [
+      {"name": "Off topic", "description": "Books, the sea, everything else."}
+    ]}
+  ],
+  "topics": [
+    {"section": "Questions and answers", "title": "Forum rules", "author": "starbuck", "sticky": true, "views": 960,
+     "body": "<p>Keep to the point and respect each other. Questions about the engine go to \"Questions and answers\", ideas to \"Ideas and suggestions\".</p><p>Search before asking: the answer may be there already.</p>",
+     "replies": []},
+    {"section": "Questions and answers", "title": "How do I change the site's logo?", "author": "jim_hawkins", "views": 310,
+     "body": "<p>I've installed a site and there's an orca in the header. Where do I put my own logo?</p>",
+     "replies": [
+       {"author": "starbuck", "body": "Admin → Site information, the Logo field. The name and the slogan are there too.", "replies": [
+         {"author": "jim_hawkins", "body": "Found it, thanks!"}
+       ]}
+     ]},
+    {"section": "Ideas and suggestions", "title": "The dark scheme by default", "author": "captain_nemo", "views": 240,
+     "body": "<p>How about opening the site in the dark scheme when the visitor's system uses it?</p>",
+     "replies": [
+       {"author": "ishmael", "body": "I like that it's light by default."},
+       {"author": "queequeg", "body": "Could be a theme setting - each site would choose."}
+     ]},
+    {"section": "Off topic", "title": "What to read about the sea?", "author": "ishmael", "views": 180,
+     "body": "<p>I'll start with Moby-Dick. Share your books about the sea and ships.</p>",
+     "replies": [
+       {"author": "captain_nemo", "body": "Twenty Thousand Leagues Under the Sea, of course."},
+       {"author": "long_john_silver", "body": "Treasure Island. There's a most charming cook in it.", "replies": [
+         {"author": "jim_hawkins", "body": "Charming isn't the word."}
+       ]}
+     ]}
+  ]
+}

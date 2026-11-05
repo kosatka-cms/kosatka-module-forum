@@ -1,0 +1,570 @@
+/*** PAGER *******************************************************************/
+
+#forum-comments .pager-current,
+#forum-comments .pager a:hover {
+    background: #3C78A7;
+    color: #FFFFFF !important;
+}
+
+#forum-comments .pager a.active {
+    color: #333333;
+}
+
+/*** FORUM & TOPIC LIST ******************************************************/
+
+/* General */
+.forum-table {
+    border: 1px solid #C8DBEA !important;
+    color: #494949;
+    border-collapse: separate;
+    margin: 0 0 10px;
+    padding: 0;
+    width: 100%;
+    background-color: white;
+}
+
+/* Main header on forum list */
+.forum-table-wrap .forum-table-superheader {
+    /* "background" (not background-color) to reset any inherited image;
+       a theme adds its own picture. */
+    background: #01799E;
+    border: 1px solid #01799E;
+    text-shadow: 1px 1px 3px #011723;
+}
+
+/* Table header on forum list and topic list*/
+.forum-table thead tr {
+    border-top: 1px solid #FFFFFF;
+    background: #EDF5FA;
+    background: -webkit-gradient(linear, left top, left bottom, from(#EDF5FA), to(#C8DBEA));
+    background: -moz-linear-gradient(top, #EDF5FA, #C8DBEA);
+    border: 1px solid #01799e;
+    color: #3C78A7;
+    line-height: 1.5em;
+    padding: 2px 5px;
+}
+
+.forum-table thead tr a,
+.forum-table thead tr a:visited,
+.forum-table thead tr a:link {
+    color: #3C78A7;
+}
+
+/* Rows, both tables */
+.forum-table tr.odd {
+    background: #EDF5FA;
+}
+
+.forum-table tr.even {
+    background: #E7F2F9;
+}
+
+/* Individual cells on both tables */
+.forum-table td {
+    /* Structure here because this is unique to this style
+    line-height: 1.5em;*/
+    padding: 4px;
+    border: none;
+}
+
+/*** Sticky topics ***/
+
+.forum-table .sticky-label {
+    font-weight: bold;
+}
+
+/*** FORUM STATISTICS *********************************************************/
+#forum-statistics {
+    border: 1px solid #C8DBEA;
+}
+
+.forum-statistics-sub-header {
+    background-color: #E7F2F9;
+    color: #3C78A7;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+}
+
+.forum-statistics-sub-body {
+    background-color: #EDF5FA;
+    color: #494949;
+}
+
+/*** FORUM TOPICS **********************************************************/
+
+div.forum-post {
+    border: 1px solid #ccc !important;
+}
+
+/* Header at the top of each post */
+.forum-post-info,
+.forum-post-wrapper,
+.forum-post-footer {
+    border: 2px solid white;
+    background: #EEEEEE;
+    background: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#EEEEEE));
+    background: -moz-linear-gradient(top, #EEEEEE, #EEEEEE);
+}
+
+.forum-post-info {
+    background-color: #CCCCCC;
+    color: #3C78A7;
+    margin-bottom: 0;
+    border-bottom: none;
+    font-size: 14px;
+
+    font-weight: bold;
+
+    margin-bottom: 3px;
+}
+
+.forum-post-number a {
+    color: #3C78A7 !important;
+}
+
+/* Wrapper around AP and content */
+.forum-post-wrapper {
+    background-color: #E7F2F9;
+    border-bottom: 2px solid white;
+    word-wrap: break-word;
+}
+
+/* Post text area */
+.forum-post-panel-main {
+    border: none;
+    background-color: white;
+}
+
+.forum-post-title {
+    border-bottom: none;
+    border-left: 2px solid white;
+    background-color: #EDF5FA;
+    line-height: 225%;
+    padding-bottom: 2px;
+    color: #3C78A7;
+}
+
+/* Post footer */
+.forum-post-footer {
+    background-color: #EDF5FA;
+    color: #3C78A7;
+}
+
+/**************************/
+#forum .forum-header,
+.forum-post-wrapper .forum-header {
+    font-size: 12px;
+}
+
+#forum-comments .avatar-user,
+.forum-post-wrapper .avatar-user {
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
+#forum-comments .username,
+.forum-post-wrapper .username {
+    font-size : 16px;
+}
+
+#forum-comments .user-picture img,
+.forum-post-wrapper .user-picture img {
+    border: 1px solid #CCCCCC;
+    padding: 5px;
+}
+
+.author-signature img {
+    max-height: 200px;
+}
+
+#forum .forum-table-superheader,
+#forum .forum-table-superheader a {
+    color: #fff;
+}
+
+#forum .forum-table-name {
+    font-weight: bold;
+}
+
+/* FORUM LIST ICONS *********************************************************/
+td.forum-list-icon {
+    vertical-align: middle;
+    text-align: center;
+    width: 70px;
+}
+
+.forum-list-icon-wrapper span {
+    text-indent: -9999px;
+    width: 50px;
+    height: 50px;
+    display: block;
+}
+
+.forum-list-icon-default .forum-list-icon-wrapper span,
+.forum-list-icon-default .forum-list-icon-wrapper span {
+    background: transparent url(images/forum_list_default.png) no-repeat center center;
+}
+
+/* TOPIC LIST ICONS *********************************************************/
+span.topic-icon {
+    width: 24px;
+    height: 24px;
+    text-indent: -9999px;
+}
+
+.topic-icon-default {
+    background: transparent url(images/topic_list_default.png) no-repeat center center;
+}
+
+.topic-icon-hot {
+    background: transparent url(images/topic_list_hot.png) no-repeat center center;
+}
+
+.topic-icon-sticky {
+    background: transparent url(images/topic_list_sticky.png) no-repeat center center;
+}
+
+/* TOPIC LIST ICON LEGEND ***************************************************/
+.topic-icon-default {
+    background: transparent url(images/topic_list_default.png) no-repeat top left;
+}
+
+.topic-icon-hot {
+    background: transparent url(images/topic_list_hot.png) no-repeat top left;
+}
+
+.topic-icon-sticky {
+    background: transparent url(images/topic_list_sticky.png) no-repeat top left;
+}
+
+/*** PAGER ******************************************************************/
+/* Other pagers in the forum */
+#forum-comments .pager {
+    text-align: right;
+}
+
+#forum-comments .pager li {
+    padding: 3px;
+    margin: 0;
+}
+
+/*** FORUM NODE CREATION ****************************************************/
+
+.forum-node-create-links {
+    width: 30%;
+    float: left;
+}
+
+.forum-node-create-links-top {
+    clear: both;
+    padding-top: 20px; /* Lines up horizontally with pager. */
+}
+
+/*** FORUM & TOPIC LIST TABLES **********************************************/
+
+.forum-table {
+    margin: 0;
+}
+
+.forum-table-wrap,
+.forum-table-topics {
+    margin-bottom: 15px;
+    clear: both;
+}
+
+.forum-table-superheader {
+    padding-left: 10px;
+}
+
+.forum-table-superheader .forum-table-name {
+    margin: 5px 0 3px 5px;
+    width: 90%;
+    display: inline;
+    font-size: 1.2em;
+}
+
+.forum-table-superheader .forum-table-description {
+    margin: 0 0 3px 5px;
+    width: 90%;
+}
+
+/* Header, both tables */
+.forum-table th {
+    text-align: left;
+}
+
+/* Forum listing */
+th.forum-name {
+    text-align: left;
+}
+
+th.forum-icon {
+    width: 5%;
+}
+
+td.forum-details .forum-description {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+th.forum-topics,
+th.forum-posts {
+    width: 10%;
+    text-align: center;
+}
+
+td.forum-number-topics,
+td.forum-number-posts {
+    text-align: center;
+}
+
+th.forum-last-post {
+    width: 20%;
+}
+
+/**** Topic listing ****/
+
+/* Set column widths */
+.forum-table-topics td.views-field-topic-icon {
+    width: 26px;
+}
+
+.forum-table-topics td.views-field-comment-count,
+.forum-table-topics td.views-field-totalcount {
+    width: 10%;
+}
+
+.forum-table-topics td.views-field-last-updated {
+    width: 30%;
+}
+
+/* Set alignments & spacing */
+.forum-table-topics .views-field-title {
+    text-align: left;
+}
+
+.forum-table-topics td.views-field-comment-count,
+.forum-table-topics td.views-field-totalcount {
+    text-align: center;
+    white-space: nowrap;
+}
+
+.forum-table-topics td.views-field-last-updated {
+    line-height: 140%;
+    white-space: normal !important;
+}
+
+/* Topic icon */
+.forum-table-topics span.topic-icon {
+    display: block;
+}
+
+/*** FORUM STATISTICS *******************************************************/
+
+.forum-statistics-sub-header {
+    padding: 0.3em 0.5em;
+}
+
+.forum-statistics-sub-body {
+    padding: 0.3em 0.5em 0 2em;
+}
+
+/*** ICONS LEGEND ***********************************************************/
+
+.forum-topic-legend div {
+    clear: both;
+    float: left;
+    padding: 5px 0 5px 25px;
+    margin-right: 7px;
+}
+
+/*** FORUM TOPICS **********************************************************/
+
+/* Header at the top of each topic/thread */
+.forum-topic-header {
+    margin: 10px 0 2px 0;
+}
+
+.forum-topic-header .topic-post-count {
+    clear: right;
+    float: right;
+    margin: 7px 7px 0 0;
+}
+
+.forum-topic-header .topic-reply-link,
+.forum-topic-header .last-post-link {
+    float: left;
+    margin: 0 7px 7px 0;
+}
+
+/* Individual forum post */
+div.forum-post {
+    margin: 0 0 5px 0;
+    padding: 0;
+}
+
+.forum-post-wrapper {
+    clear: both;
+    height: 100%;
+}
+
+/* Header at the top of each post */
+.forum-post-info {
+    height:100%;
+    clear: both;
+}
+
+.forum-posted-on {
+    padding: 0 5px;
+    float: left;
+    font-size: .8em;
+}
+
+.forum-post .new {
+    float: none;
+}
+
+.forum-post-number {
+    float: right;
+    margin-right: 5px;
+}
+
+.forum-post-title {
+    padding: 1px 1px 1px 10px;
+}
+
+/* Author information pane */
+.forum-post-panel-sub {
+    float: left;
+    line-height: 100%;
+    width: 150px;
+}
+
+/* Post text area */
+.forum-post-panel-main {
+    margin-left: 150px; /* These heights keep the AP items from jumping out of the bottom. Depending
+       on how many items you display, there, this number may need to be adjusted
+       to avoid having unnecessary white space in your posts.
+      min-height: 230px;
+      height: auto !important;
+      height: 230px;   */
+}
+
+/* Post text area */
+
+.forum-post-panel-main .forum-post-content {
+    padding-top: 2px;
+}
+
+.forum-post-panel-main .forum-post-content {
+    margin-left: 0;
+    padding-left: 10px;
+}
+
+.forum-post-panel-main p {
+    margin-right: 10px;
+}
+
+/* Signature */
+.author-signature {
+    font-size: 12px;
+    margin: 10px 0 5px 10px;
+}
+
+/* Post footer */
+.forum-post-footer {
+    margin-top: 0;
+    clear: both;
+}
+
+.forum-post-links {
+    float: right;
+    line-height: 2em;
+    text-align: right;
+    margin: 10px 0 5px 5px;
+}
+
+.forum-post-links ul.links li {
+    display: block;
+    float: left;
+}
+
+/*** PREVIEW MODE ****************************************************************/
+/* override inline-block */
+.preview {
+    display: block;
+}
+
+.forum-topic-page .user-picture img {
+    width: 100px;
+}
+
+/* Author in the post header: mobile only (desktop shows it in the left column) */
+.forum-post .forum-post-author-mobile {
+    display: none;
+}
+
+/* Mobile: drop the 150px author column; the author moves to .forum-post-info */
+@media (max-width: 767px) {
+    .forum-post .forum-post-panel-sub {
+        display: none !important;
+    }
+
+    .forum-post .forum-post-panel-main {
+        margin-left: 0 !important;
+        float: none;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .forum-post .forum-post-author-mobile {
+        display: inline-block;
+        margin-left: 8px;
+        font-weight: 600;
+        font-size: 0.9em;
+        color: #3c78a7;
+        vertical-align: baseline;
+        overflow-wrap: anywhere;
+        max-width: 100%;
+    }
+
+    .forum-post .forum-post-author-mobile a {
+        color: #3c78a7;
+        text-decoration: none;
+    }
+
+    .forum-post .forum-post-author-mobile a:hover {
+        text-decoration: underline;
+    }
+
+    /* Nested replies: smaller indent per level, capped depth (--forum-depth set in the template) */
+    #forum-comments .indented {
+        margin-left: 8px;
+    }
+
+    #forum-comments .forum-post[class*="comment-depth-"] {
+        margin-left: calc(min(var(--forum-depth, 0), 5) * 10px) !important;
+    }
+}
+
+/* Embedded images/videos never exceed the column (editors often set px widths) */
+.forum-post-content img,
+.forum-post-content video,
+.author-signature img {
+    max-width: 100% !important;
+    height: auto !important;
+    box-sizing: border-box;
+}
+
+.forum-post-content iframe {
+    max-width: 100%;
+}
+
+/* Forum list (/forum): hide the icon column on mobile */
+@media (max-width: 767px) {
+    .forum-table.forum-table-forums th.forum-icon,
+    .forum-table.forum-table-forums td.forum-list-icon {
+        display: none;
+    }
+}

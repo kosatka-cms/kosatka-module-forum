@@ -1,0 +1,115 @@
+{{template "layout.html" .}}
+
+{{define "title"}}<h1 class="page-title">{{.title}}</h1>{{end}}
+
+{{define "breadcrumb"}}{{template "breadcrumbs_nav" .}}{{end}}
+
+{{define "content"}}{{attach "forum"}}
+
+<div class="forum-page">
+    <div class="panel-flexible panels-flexible-new clearfix" id="forum">
+        <div class="panel-flexible-inside panels-flexible-new-inside">
+            <div class="panels-flexible-region panels-flexible-region-new-center">
+                <div class="inside panels-flexible-region-inside">
+                    
+                    <div class="panel-pane pane-forum-list">
+                        <div class="pane-content">
+                            <p class="forum-topic-lists"><a href="/forum/active">{{t "Active topics"}}</a> · <a href="/forum/unanswered">{{t "Unanswered topics"}}</a></p>
+
+                            {{range .categories}}
+                            <div class="forum-table-wrap">
+                                <div class="forum-table-superheader">
+                                    <div class="forum-table-name">
+                                        <a href="{{localURL (printf "/%s" .Slug)}}">{{.Name}}</a>
+                                    </div>
+                                    {{if .Description}}
+                                    <div class="forum-table-description">{{.Description | rawHTML}}</div>
+                                    {{end}}
+                                </div>
+                                
+                                <div class="forum-table-content">
+                                    <table class="forum-table forum-table-forums">
+                                        <thead class="forum-header">
+                                            <tr>
+                                                <th class="forum-icon">&nbsp;</th>
+                                                <th class="forum-name">{{t "Forum"}}</th>
+                                                <th class="forum-topics">{{t "Topics"}}</th>
+                                                <th class="forum-posts">{{t "Posts"}}</th>
+                                                <th class="forum-last-post">{{t "Last post"}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{range .Sections}}
+                                            <tr class="forum-row">
+                                                <td class="forum-list-icon forum-list-icon-default">
+                                                    <span class="forum-list-icon-wrapper">
+                                                        <span>{{t "No new"}}</span>
+                                                    </span>
+                                                </td>
+                                                <td class="forum-details">
+                                                    <div class="forum-name">
+                                                        <a href="{{localURL (printf "/%s" .Slug)}}">{{.Name}}</a>
+                                                    </div>
+                                                    {{if .Description}}
+                                                    <div class="forum-description">{{.Description}}</div>
+                                                    {{end}}
+                                                </td>
+                                                <td class="forum-number-topics">
+                                                    <div class="forum-number-topics">{{.TopicsCount}}</div>
+                                                </td>
+                                                <td class="forum-number-posts">
+                                                    {{.PostsCount}}
+                                                </td>
+                                                <td class="forum-last-reply">
+                                                    {{if .LastTopic}}
+                                                    <a href="{{.LastTopic.Path}}">{{.LastTopic.Title}}</a><br>
+                                                    <span class="username">{{.LastTopic.Author}}</span><br>
+                                                    {{date .LastTopic.Timestamp "datetime"}}
+                                                    {{else}}
+                                                    <span>{{t "No topics"}}</span>
+                                                    {{end}}
+                                                </td>
+                                            </tr>
+                                            {{end}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            {{end}}
+
+                        </div>
+                    </div>
+
+                    {{if .statistics}}
+                    <div class="panel-separator"></div>
+                    <div class="panel-pane pane-forum-statistics">
+                        <div class="pane-content">
+                            <div id="forum-statistics">
+                                <div id="forum-statistics-statistics-header" class="forum-statistics-sub-header">
+                                    {{t "Statistics"}}
+                                </div>
+                                <div id="forum-statistics-statistics-body" class="forum-statistics-sub-body">
+                                    <div id="forum-statistics-topics">
+                                        {{t "Topics: @topics, Posts: @posts, Users: @users" "@topics" .statistics.TotalTopics "@posts" .statistics.TotalPosts "@users" .statistics.TotalUsers}}
+                                    </div>
+                                    {{if .statistics.LatestUsers}}
+                                    <div id="forum-statistics-latest-users">
+                                        {{t "Newest member:"}} 
+                                        {{range $i, $user := .statistics.LatestUsers}}
+                                            {{if $i}}, {{end}}<span class="username">{{$user}}</span>
+                                        {{end}}
+                                    </div>
+                                    {{end}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{end}}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{end}}

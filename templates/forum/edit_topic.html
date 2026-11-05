@@ -1,0 +1,43 @@
+{{template "layout.html" .}}
+
+{{define "title"}}<h1 class="page-title">{{t "Edit topic"}}</h1>{{end}}
+
+{{define "breadcrumb"}}{{template "breadcrumbs_nav" .}}{{end}}
+
+{{define "content"}}{{attach "forum"}}
+
+<div class="forum-edit-topic">
+    <form method="POST" action="/forum/topic/{{.topic.ID}}/edit" class="node-form">
+        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+
+        <div class="form-group mb-3">
+            <label for="section_id">{{t "Forum section"}} <span class="required">*</span></label>
+            <select id="section_id" name="section_id" class="form-select required">
+                <option value="_none">{{t "- None -"}}</option>
+                {{range .forumTerms}}
+                {{/* A category (a top-level term) heads its sections: a topic goes in a section. */}}
+                <option value="{{.ID}}" {{if not .ParentID}}disabled{{else if eq .ID $.selectedSectionID}}selected{{end}}>{{.DisplayName}}</option>
+                {{end}}
+            </select>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="title">{{t "Title"}} <span class="required">*</span></label>
+            <input type="text" id="title" name="title" required maxlength="255" class="form-control" value="{{.topic.Title}}">
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="content">{{t "Body"}} <span class="required">*</span></label>
+            <textarea id="content" name="content" class="form-control forum-topic-editor" data-editor-autoload data-editor-config="{{json (dict "preset" "text" "block_formats" (t "Paragraph=p; Heading 2=h2; Heading 3=h3"))}}">{{.topic.Content}}</textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">{{t "Save"}}</button>
+            <a href="{{.topic.Path}}" class="btn btn-secondary">{{t "Cancel"}}</a>
+        </div>
+    </form>
+</div>
+
+{{template "tinymce_user_files.html" .}}
+
+{{end}}

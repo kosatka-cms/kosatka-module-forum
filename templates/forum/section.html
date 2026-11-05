@@ -1,0 +1,147 @@
+{{template "layout.html" .}}
+
+{{/* forum/section.html - a section's topics (ForumController.Section)
+     and the lists across sections (/forum/active, /forum/unanswered:
+     no .section, each topic names its own). */}}
+{{define "title"}}<h1 class="page-title">{{.title}}</h1>{{end}}
+
+{{define "breadcrumb"}}{{template "breadcrumbs_nav" .}}{{end}}
+
+{{define "content"}}{{attach "forum"}}
+
+<div class="forum-section-page">
+    <div class="panel-flexible panels-flexible-new clearfix" id="forum">
+        <div class="panel-flexible-inside panels-flexible-new-inside">
+            <div class="panels-flexible-region panels-flexible-region-new-center">
+                <div class="inside panels-flexible-region-inside">
+                    
+                    <div class="panel-pane pane-forum-topic-list">
+                        <div class="pane-content">
+                            
+                            <div class="forum-node-create-links forum-node-create-links-top">
+                                {{with .section}}{{if $.canCreateTopic}}
+                                <a href="/forum/new-topic/{{.Slug}}">{{t "Create new topic"}}</a>
+                                {{else if not $.user}}
+                                {{t "<a href=\":login\">Log in</a> to post new forum topics." ":login" (printf "/login?destination=/forum/new-topic/%s" .Slug)}}
+                                {{end}}{{end}}
+                            </div>
+
+                            <div class="view-content">
+                                <div id="forum-topic-list">
+                                    <table class="forum-table forum-table-topics">
+                                        <thead class="forum-header">
+                                            <tr>
+                                                <th class="views-field views-field-topic-icon">&nbsp;</th>
+                                                <th class="views-field views-field-title">
+                                                    <a href="?order=title&sort={{if and (eq .orderBy "title") (eq .sortDir "asc")}}desc{{else}}asc{{end}}" 
+                                                       title="{{t "sort by @label" "@label" (t "Topic / Topic starter")}}"
+                                                       class="{{if eq .orderBy "title"}}active{{end}}">
+                                                        {{t "Topic / Topic starter"}}
+                                                        {{if and (eq .orderBy "title") (eq .sortDir "asc")}}↑{{end}}
+                                                        {{if and (eq .orderBy "title") (eq .sortDir "desc")}}↓{{end}}
+                                                    </a>
+                                                </th>
+                                                <th class="views-field views-field-comment-count">
+                                                    <a href="?order=comment_count&sort={{if and (eq .orderBy "comment_count") (eq .sortDir "asc")}}desc{{else}}asc{{end}}" 
+                                                       title="{{t "sort by @label" "@label" (t "Replies")}}"
+                                                       class="{{if eq .orderBy "comment_count"}}active{{end}}">
+                                                        {{t "Replies"}}
+                                                        {{if and (eq .orderBy "comment_count") (eq .sortDir "asc")}}↑{{end}}
+                                                        {{if and (eq .orderBy "comment_count") (eq .sortDir "desc")}}↓{{end}}
+                                                    </a>
+                                                </th>
+                                                <th class="views-field views-field-totalcount">
+                                                    <a href="?order=totalcount&sort={{if and (eq .orderBy "totalcount") (eq .sortDir "asc")}}desc{{else}}asc{{end}}" 
+                                                       title="{{t "sort by @label" "@label" (t "Views")}}"
+                                                       class="{{if eq .orderBy "totalcount"}}active{{end}}">
+                                                        {{t "Views"}}
+                                                        {{if and (eq .orderBy "totalcount") (eq .sortDir "asc")}}↑{{end}}
+                                                        {{if and (eq .orderBy "totalcount") (eq .sortDir "desc")}}↓{{end}}
+                                                    </a>
+                                                </th>
+                                                <th class="views-field views-field-last-updated {{if eq .orderBy "last_updated"}}active{{end}}">
+                                                    <a href="?order=last_updated&sort={{if and (eq .orderBy "last_updated") (eq .sortDir "asc")}}desc{{else}}asc{{end}}" 
+                                                       title="{{t "sort by @label" "@label" (t "Last post")}}"
+                                                       class="active">
+                                                        {{t "Last post"}}
+                                                        {{if and (eq .orderBy "last_updated") (eq .sortDir "asc")}}↑{{end}}
+                                                        {{if and (eq .orderBy "last_updated") (eq .sortDir "desc")}}↓{{end}}
+                                                    </a>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{range $index, $topic := .topics}}
+                                            <tr class="forum-row {{if $topic.Sticky}}sticky{{end}} {{if isEven $index}}even{{else}}odd{{end}}">
+                                                <td class="views-field views-field-topic-icon">
+                                                    {{if $topic.Sticky}}
+                                                    <span class="topic-icon topic-icon-sticky">{{t "Sticky topic"}}</span>
+                                                    {{else if $topic.IsHot}}
+                                                    <span class="topic-icon topic-icon-hot">{{t "Hot topic"}}</span>
+                                                    {{else}}
+                                                    <span class="topic-icon topic-icon-default">{{t "Normal topic"}}</span>
+                                                    {{end}}
+                                                </td>
+                                                <td class="views-field views-field-title">
+                                                    {{if $topic.Sticky}}
+                                                    <span class="sticky-label">{{t "Sticky:"}}</span>
+                                                    {{end}}
+                                                    <a href="{{$topic.Path}}" title="">
+                                                        <span class="forum-topic-title">{{$topic.Title}}</span>
+                                                    </a>
+                                                    <br> {{t "by"}} <span class="username">{{$topic.Author.Username}}</span> » 
+                                                    {{date $topic.CreatedAt "datetime"}}
+                                                    {{with $topic.Section}}<br><a href="{{localURL (printf "/%s" .Slug)}}" class="forum-topic-section">{{.Name}}</a>{{end}}
+                                                </td>
+                                                <td class="views-field views-field-comment-count">
+                                                    {{$topic.CommentCount}}<br>
+                                                </td>
+                                                <td class="views-field views-field-totalcount">
+                                                    {{$topic.ViewsCount}}
+                                                </td>
+                                                <td class="views-field views-field-last-updated">
+                                                    {{if $topic.LastComment}}
+                                                    {{t "by"}} <span class="username">{{$topic.LastComment.Author}}</span><br>
+                                                    {{date $topic.LastComment.Timestamp "datetime"}}
+                                                    {{else}}
+                                                    <span>{{t "No comments"}}</span>
+                                                    {{end}}
+                                                </td>
+                                            </tr>
+                                            {{end}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            {{template "pagination.html" .}}
+
+                            <div class="forum-node-create-links">
+                                {{with .section}}{{if $.canCreateTopic}}
+                                <a href="/forum/new-topic/{{.Slug}}">{{t "Create new topic"}}</a>
+                                {{else if not $.user}}
+                                {{t "<a href=\":login\">Log in</a> to post new forum topics." ":login" (printf "/login?destination=/forum/new-topic/%s" .Slug)}}
+                                {{end}}{{end}}
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="panel-separator"></div>
+                    <div class="panel-pane pane-forum-topic-legend">
+                        <div class="pane-content">
+                            <div class="forum-topic-legend clearfix">
+                                <div class="topic-icon-default">{{t "Normal topic"}}</div>
+                                <div class="topic-icon-hot">{{t "Hot topic"}}</div>
+                                <div class="topic-icon-sticky">{{t "Sticky topic"}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{end}}
